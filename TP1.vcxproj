@@ -22,11 +22,7 @@
     <Text Include="inventaire.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Exo1.cpp" />
-    <ClCompile Include="Exo2.cpp" />
-    <ClCompile Include="Exo3.cpp" />
-    <ClCompile Include="Exo4.cpp" />
-    <ClCompile Include="Exo5.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
