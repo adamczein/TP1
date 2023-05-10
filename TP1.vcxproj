@@ -18,6 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="inventaire.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Exo1.cpp" />
+    <ClCompile Include="Exo2.cpp" />
+    <ClCompile Include="Exo3.cpp" />
+    <ClCompile Include="Exo4.cpp" />
+    <ClCompile Include="Exo5.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,13 +136,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Exo1.cpp" />
-    <ClCompile Include="Exo2.cpp" />
-    <ClCompile Include="Exo3.cpp" />
-    <ClCompile Include="Exo4.cpp" />
-    <ClCompile Include="Exo5.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
