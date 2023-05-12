@@ -79,17 +79,21 @@ void q2()
 	while(true)
 	{ 
 		nombreEntier = lireEntierDansIntervalle("Entrez un nombre entier : " , 0, 1000);
-		nombreTentatives++;
+		
+		
 
 		if (nombreEntier < nombreAleatoire)
 		{
 		cout << "Trop bas." << endl;
-
+		nombreTentatives++;
+		
 		}
 
 		if (nombreEntier > nombreAleatoire)
 		{
 		cout << "Trop haut." << endl;
+		nombreTentatives++;
+		
 	
 		}
 	
@@ -280,11 +284,11 @@ void q5() {
 
 int main()
 {
-	//q1();
-	//q2();
-	//q3();
-	//q4();
-	//q5();
+	q1();
+	q2();
+	q3();
+	q4();
+	q5();
 	return 0;
 }
 
