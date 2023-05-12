@@ -63,7 +63,8 @@ void q2()
 	
 	while(true)
 	{ 
-		do {
+		do 
+		{
 			cout << "Entrez un nombre entier entre 0 et 1000 : ";
 			cin >> nombreEntier;
 		} while (nombreEntier > 1000 || nombreEntier < 0);
@@ -90,12 +91,100 @@ void q2()
 	}
 }
 
+bool estEnCollision(int tempsTotal, int positionInitialeTrain1, 
+					int positionInitialeTrain2, int vitesseTrain1, 
+					int vitesseTrain2)
+{	
+	if (vitesseTrain1 < 0) {
+		if (positionInitialeTrain1 + (vitesseTrain1 * tempsTotal) < positionInitialeTrain2 + (vitesseTrain2 * tempsTotal)) {
+			return true;
+		}
+	return false;
+
+	}
+	
+	if (vitesseTrain2 < 0)
+	{
+		if (positionInitialeTrain1 + (vitesseTrain1 * tempsTotal) > positionInitialeTrain2 + (vitesseTrain2 * tempsTotal)) {
+			return true;
+		}
+	return false;
+	}
+
+	
+
+}
+
+int positionTrain(int positionInitiale, int vitesse, int temps)
+{
+	int position;
+
+	position = positionInitiale + (vitesse * temps);
+
+	return position;
+}
+
+void q3()
+{
+	
+	int tempsTotal;
+	int positionInitialeTrain1;
+	int positionInitialeTrain2;
+	int vitesseTrain1;
+	int vitesseTrain2;
+
+	do 
+	{
+	cout << "Entrez le temps total :";
+	cin >> tempsTotal;
+	} while (tempsTotal < 0);
+
+	cout << "Entrez la position intiale du premier train :";
+	cin >> positionInitialeTrain1;
+
+	do
+	{ 
+	cout << "Entrez la vitesse du premier train :";
+	cin >> vitesseTrain1;
+	} while (vitesseTrain1 < -100 || vitesseTrain1 > 100);
+
+	cout << "Entrez la position intiale du second train :";
+	cin >> positionInitialeTrain2;
+
+	do
+	{
+		cout << "Entrez la vitesse du second train :";
+		cin >> vitesseTrain2;
+	} while (vitesseTrain2 < -100 || vitesseTrain2 > 100);
+
+	for (int i = 1; i <= tempsTotal; i++)
+	{
+		cout << "Apres " << i << " seconde(s)" << endl;
+
+		cout << "Train 1 : " << positionTrain(positionInitialeTrain1, vitesseTrain1, i) << endl;
+		cout << "Train 2 : " << positionTrain(positionInitialeTrain2, vitesseTrain2, i) << endl;
+
+		if (estEnCollision(i ,positionInitialeTrain1,
+			positionInitialeTrain2, vitesseTrain1,
+			vitesseTrain2))
+		{
+			cout << "Il y a eu une collision pendant la " << i << "e seconde !" << endl;
+			return;
+		}
+		
+	}
+
+	cout << "Il n'y a pas eu de collision" << endl;
+
+}
+
 
 
 int main()
 {
 	q1();
 	q2();
+	q3();
 	return 0;
 }
 
