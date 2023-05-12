@@ -15,6 +15,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <limits.h>
 
 using namespace std;
 
@@ -54,32 +55,42 @@ void q1()
 	}
 }
 
+int lireEntierDansIntervalle(string texte, int valeurMinimale, int valeurMaximale)
+{
+	int entree;
+
+	do
+	{
+		cout << texte;
+		cin >> entree;
+
+	} while (entree > valeurMaximale || entree < valeurMinimale);
+
+	return entree;
+}
+
 void q2()
 {
 	int nombreEntier;
 	int nombreAleatoire = rand() % 1001;
 	int nombreTentatives = 0;
 
-	
+
 	while(true)
 	{ 
-		do 
-		{
-			cout << "Entrez un nombre entier entre 0 et 1000 : ";
-			cin >> nombreEntier;
-		} while (nombreEntier > 1000 || nombreEntier < 0);
+		nombreEntier = lireEntierDansIntervalle("Entrez un nombre entier : " , 0, 1000);
+		nombreTentatives++;
 
 		if (nombreEntier < nombreAleatoire)
 		{
 		cout << "Trop bas." << endl;
-		nombreTentatives++;
 
 		}
 
 		if (nombreEntier > nombreAleatoire)
 		{
 		cout << "Trop haut." << endl;
-		nombreTentatives++;
+	
 		}
 	
 		if (nombreEntier == nombreAleatoire)
@@ -103,7 +114,7 @@ bool estEnCollision(int tempsTotal, int positionInitialeTrain1,
 
 	}
 	
-	if (vitesseTrain2 < 0)
+	else if (vitesseTrain2 < 0)
 	{
 		if (positionInitialeTrain1 + (vitesseTrain1 * tempsTotal) > positionInitialeTrain2 + (vitesseTrain2 * tempsTotal)) {
 			return true;
@@ -111,7 +122,10 @@ bool estEnCollision(int tempsTotal, int positionInitialeTrain1,
 	return false;
 	}
 
-	
+	else 
+	{
+		return false;
+	}	
 
 }
 
@@ -126,36 +140,22 @@ int positionTrain(int positionInitiale, int vitesse, int temps)
 
 void q3()
 {
-	
+
 	int tempsTotal;
 	int positionInitialeTrain1;
 	int positionInitialeTrain2;
 	int vitesseTrain1;
 	int vitesseTrain2;
 
-	do 
-	{
-	cout << "Entrez le temps total :";
-	cin >> tempsTotal;
-	} while (tempsTotal < 0);
+	tempsTotal = lireEntierDansIntervalle("Entrez le temps total :", 0, INT_MAX);
 
-	cout << "Entrez la position intiale du premier train :";
-	cin >> positionInitialeTrain1;
+	positionInitialeTrain1 = lireEntierDansIntervalle("Entrez la position intiale du premier train :", INT_MIN, INT_MAX);
 
-	do
-	{ 
-	cout << "Entrez la vitesse du premier train :";
-	cin >> vitesseTrain1;
-	} while (vitesseTrain1 < -100 || vitesseTrain1 > 100);
+	vitesseTrain1 = lireEntierDansIntervalle("Entrez la vitesse du premier train :", -100, 100);
 
-	cout << "Entrez la position intiale du second train :";
-	cin >> positionInitialeTrain2;
+	positionInitialeTrain2 = lireEntierDansIntervalle("Entrez la position intiale du second train :", INT_MIN, INT_MAX);
 
-	do
-	{
-		cout << "Entrez la vitesse du second train :";
-		cin >> vitesseTrain2;
-	} while (vitesseTrain2 < -100 || vitesseTrain2 > 100);
+	vitesseTrain2 = lireEntierDansIntervalle("Entrez la vitesse du second train :", -100, 100);
 
 	for (int i = 1; i <= tempsTotal; i++)
 	{
@@ -280,11 +280,11 @@ void q5() {
 
 int main()
 {
-	/*q1();
-	q2();
-	q3();*/
-	/*q4();*/
-	q5();
+	//q1();
+	//q2();
+	//q3();
+	//q4();
+	//q5();
 	return 0;
 }
 
