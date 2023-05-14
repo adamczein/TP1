@@ -1,12 +1,10 @@
-/**
+/*
 * Programme TD1 du cours INF1015
-* \file Source.cpp
+* \file main.cpp
 * \auteurs Salma Zaghloul et Adam El Zein
 * \date 14 mai 2023
 * \Créé le 10 mai 2023
 */
-
-
 
 #include <iostream>
 #include <cmath>
@@ -19,46 +17,54 @@
 
 using namespace std;
 
-bool estPremier(int nombreEntier) 
+// Fonction qui vérifie si un nombre entier est premier ou non
+bool estPremier(int nombreEntier)
 {
+	// On parcourt tous les entiers de 2 à la racine carrée du nombre
 	for (int i = 2; i <= sqrt(nombreEntier); i++)
-	{ 
-		if(nombreEntier % i == 0) 
+	{
+		// Si le nombre est divisible par un entier, il n'est pas premier
+		if (nombreEntier % i == 0)
 		{
 			return false;
 		}
 	}
-		return true;
-
+	// Si aucun entier ne divise le nombre, il est premier
+	return true;
 }
 
+// Fonction qui demande à l'utilisateur d'entrer des nombres entiers jusqu'à ce qu'il entre -1
 void q1()
 {
-	while (true) 
+	while (true)
 	{
 		int nombreEntier;
 		cout << "Entrez un nombre entier : ";
 		cin >> nombreEntier;
-
 		if (nombreEntier == -1)
-		{ 
+		{
 			break;
 		}
 
-		while (!estPremier(nombreEntier)) 
+		// On incrémente le nombre tant qu'il n'est pas premier
+		while (!estPremier(nombreEntier))
 		{
 			nombreEntier++;
-	    }
+		}
 
-		cout << "Le prochain nombre entier est " << nombreEntier << endl;;
-		
+		cout << "Le prochain nombre premier est " << nombreEntier <<"."<< endl;;
+
 	}
 }
 
+// Cette fonction permet de lire un entier dans un intervalle donné
+// et renvoie l'entier lu.
 int lireEntierDansIntervalle(string texte, int valeurMinimale, int valeurMaximale)
 {
-	int entree;
+	double entree;
 
+	// On demande à l'utilisateur d'entrer un entier
+	// tant que l'entier n'est pas dans l'intervalle souhaité.
 	do
 	{
 		cout << texte;
@@ -66,73 +72,131 @@ int lireEntierDansIntervalle(string texte, int valeurMinimale, int valeurMaximal
 
 	} while (entree > valeurMaximale || entree < valeurMinimale);
 
-	return entree;
+	return round(entree);
+
+	/*Le warning C4244 signifie que le compilateur a détecté une possible perte de données lors de la conversion
+	d'un type de données en une autre. Cependant dans notre cas, le return round(entree) permet de prendre en compte la partie
+	fractionnaire et d'arrondir à l'entier le plus proche, tel qu'il est demandé dans la partie de l'énoncé qui stipule :
+	L’entrée de l’entier de l’utilisateur sera par cette fonction, où le réel résultant sera converti en entier.
+	Ainsi, le warning C4244 n'est pas un problème dans ce cas et peut être ignoré. */
+	
 }
 
+// Cette fonction permet de jouer au jeu de deviner un nombre
+// choisi aléatoirement entre 0 et 1000.
 void q2()
 {
 	int nombreEntier;
-	int nombreAleatoire = rand() % 1001;
-	int nombreTentatives = 0;
+	int nombreAleatoire = rand() % 1001;  // On choisit un nombre aléatoire
+	int nombreTentatives = 0;  // On initialise le nombre de tentatives à 0
+	static const int valeurMinimale = 0;
+	static const int valeurMaximale = 1000;
 
 
-	while(true)
-	{ 
-		nombreEntier = lireEntierDansIntervalle("Entrez un nombre entier : " , 0, 1000);
-		
-		
+	// On continue à demander à l'utilisateur d'entrer un nombre
+	// jusqu'à ce qu'il trouve le bon nombre.
+	while (true)
+	{
+		nombreEntier = lireEntierDansIntervalle("Entrez un nombre entier : ", valeurMinimale, valeurMaximale);
 
+		// Si le nombre entré est plus petit que le nombre à trouver
 		if (nombreEntier < nombreAleatoire)
 		{
-		cout << "Trop bas." << endl;
-		nombreTentatives++;
-		
+			cout << "Trop bas." << endl;
+			nombreTentatives++;
+
 		}
 
+		// Si le nombre entré est plus grand que le nombre à trouver
 		if (nombreEntier > nombreAleatoire)
 		{
-		cout << "Trop haut." << endl;
-		nombreTentatives++;
-		
-	
+			cout << "Trop haut." << endl;
+			nombreTentatives++;
+
 		}
-	
+
+		// Si le nombre entré est égal au nombre à trouver, on a gagné.
 		if (nombreEntier == nombreAleatoire)
 		{
-		cout << "Bravo! Vous avez reussi en " << nombreTentatives + 1 << " tentative(s)!" << endl;
-		return;
+			cout << "Bravo! Vous avez reussi en " << nombreTentatives + 1 << " tentative(s)!" << endl;
+			return;
 
 		}
 	}
 }
-
-bool estEnCollision(int tempsTotal, int positionInitialeTrain1, 
-					int positionInitialeTrain2, int vitesseTrain1, 
-					int vitesseTrain2)
-{	
-	if (vitesseTrain1 < 0) {
+// Cette fonction détermine si deux trains en mouvement entrent en collision à un moment donné
+// tempsTotal: le temps écoulé depuis le début du mouvement des trains
+// positionInitialeTrain1, positionInitialeTrain2: positions initiales des trains
+// vitesseTrain1, vitesseTrain2: vitesses des trains (positives ou négatives)
+bool estEnCollision(int tempsTotal, int positionInitialeTrain1,
+	int positionInitialeTrain2, int vitesseTrain1,
+	int vitesseTrain2)
+{
+	if (vitesseTrain1 < 0 && vitesseTrain2 >= 0) {
 		if (positionInitialeTrain1 + (vitesseTrain1 * tempsTotal) < positionInitialeTrain2 + (vitesseTrain2 * tempsTotal)) {
 			return true;
 		}
-	return false;
-
+		return false;
 	}
-	
-	else if (vitesseTrain2 < 0)
+
+	else if (vitesseTrain2 < 0 && vitesseTrain1 >=0)
 	{
 		if (positionInitialeTrain1 + (vitesseTrain1 * tempsTotal) > positionInitialeTrain2 + (vitesseTrain2 * tempsTotal)) {
 			return true;
 		}
-	return false;
+		return false;
 	}
 
-	else 
+	else if (vitesseTrain2 < 0 && vitesseTrain1 < 0)
 	{
+		if (vitesseTrain1 < vitesseTrain2)
+			if (positionInitialeTrain1 > positionInitialeTrain2)
+				if (positionInitialeTrain1 + (vitesseTrain1 * tempsTotal) < positionInitialeTrain2 + (vitesseTrain2 * tempsTotal)) {
+					return true;
+				}
+		if (vitesseTrain2 < vitesseTrain1)
+			if (positionInitialeTrain2 > positionInitialeTrain1)
+				if (positionInitialeTrain2 + (vitesseTrain2 * tempsTotal) < positionInitialeTrain1 + (vitesseTrain1 * tempsTotal)) {
+					return true;
+				}
+		if (positionInitialeTrain2 + (vitesseTrain2 * tempsTotal) < positionInitialeTrain1 + (vitesseTrain1 * tempsTotal)) {
+			return true;
+		}
 		return false;
-	}	
+	}
+	
+	else if (abs(vitesseTrain1) > abs(vitesseTrain2))
+	{
+		if (abs(positionInitialeTrain1) < abs(positionInitialeTrain2))
+			if (abs(positionInitialeTrain1 + abs(vitesseTrain1 * tempsTotal)) > abs(positionInitialeTrain2 + abs(vitesseTrain2 * tempsTotal)))
+			{
+				return true;
+			}
+		return false;
+	}
 
+	else if (abs(vitesseTrain2) > abs(vitesseTrain1))
+	{
+		if (abs(positionInitialeTrain2) < abs(positionInitialeTrain1))
+			if (abs(positionInitialeTrain2 + abs(vitesseTrain2 * tempsTotal)) > abs(positionInitialeTrain1 + abs(vitesseTrain1 * tempsTotal)))
+			{
+				return true;
+			}
+		return false;
+	}
+
+	else if (positionInitialeTrain1 == positionInitialeTrain2)
+		return true;
+
+	else if (positionInitialeTrain2 + (vitesseTrain2 * tempsTotal) == positionInitialeTrain1 + (vitesseTrain1 * tempsTotal))
+		return true;
+
+	else {
+		return false;
+	}
 }
 
+// Cette fonction calcule la position d'un train à un temps donné
 int positionTrain(int positionInitiale, int vitesse, int temps)
 {
 	int position;
@@ -142,15 +206,18 @@ int positionTrain(int positionInitiale, int vitesse, int temps)
 	return position;
 }
 
+// Cette fonction permet à l'utilisateur d'entrer les informations sur les deux trains
+// et de déterminer s'ils entrent en collision pendant le temps total donné.
 void q3()
 {
-
+	// Déclaration des variables pour le temps total, les positions initiales et les vitesses des deux trains
 	int tempsTotal;
 	int positionInitialeTrain1;
 	int positionInitialeTrain2;
 	int vitesseTrain1;
 	int vitesseTrain2;
 
+	// Lecture des entrées utilisateur
 	tempsTotal = lireEntierDansIntervalle("Entrez le temps total :", 0, INT_MAX);
 
 	positionInitialeTrain1 = lireEntierDansIntervalle("Entrez la position intiale du premier train :", INT_MIN, INT_MAX);
@@ -161,29 +228,32 @@ void q3()
 
 	vitesseTrain2 = lireEntierDansIntervalle("Entrez la vitesse du second train :", -100, 100);
 
+	// Itération pour chaque seconde jusqu'à la fin du temps total
 	for (int i = 1; i <= tempsTotal; i++)
 	{
+		// Affichage des positions des trains à chaque seconde
 		cout << "Apres " << i << " seconde(s)" << endl;
 
 		cout << "Train 1 : " << positionTrain(positionInitialeTrain1, vitesseTrain1, i) << endl;
 		cout << "Train 2 : " << positionTrain(positionInitialeTrain2, vitesseTrain2, i) << endl;
 
-		if (estEnCollision(i ,positionInitialeTrain1,
+		// Vérification de collision à chaque seconde
+		if (estEnCollision(i, positionInitialeTrain1,
 			positionInitialeTrain2, vitesseTrain1,
 			vitesseTrain2))
 		{
 			cout << "Il y a eu une collision pendant la " << i << "e seconde !" << endl;
 			return;
 		}
-		
+
 	}
 
+	// Si aucune collision n'a eu lieu
 	cout << "Il n'y a pas eu de collision" << endl;
-
 }
 
 void q4() {
-	const int taille = 10; //not sure si il fait ou pas mettre const
+	const int taille = 10; 
 	int tab[taille];
 
 	// Saisie du tableau d'entiers
@@ -206,7 +276,7 @@ void q4() {
 	}
 
 	// Affichage du tableau trié
-	cout << "Voici le tableau trié : ";
+	cout << "Voici le tableau trie : ";
 	for (int i = 0; i < taille; i++) {
 		cout << tab[i] << " ";
 	}
@@ -214,18 +284,42 @@ void q4() {
 
 }
 
-//les constantes necessiares pour question 5
-const int MAX_ALIMENTS = 10;
-
+// Définition de la structure Aliment
 struct Aliment {
 	string nom;
 	string type;
 	int quantite;
 	double prix;
 };
+/*Le warning C26495 signifie "Variable 'nom/type/quantite/prix' est déclarée mais n'est jamais initialisée."
+  Cela signifie qu'on devrait initialiser ces variables à une valeur avant de les utiliser pour éviter les
+  comportements indéfinis.
 
-//la question 5 peut supporter jusqu'a 10 aliments  (limite imposer dans la question)
+  Dans le cas de la structure Aliment, les variables sont initialisées par les données lues à partir du fichier
+  dans la fonction q5(). Ainsi, vous pouvez ignorer ces avertissements car les variables seront initialisées avant
+  d'être utilisées dans le reste du code.*/
+
+// Fonction pour trouver l'aliment le plus cher dans l'inventaire
+Aliment alimentPlusCher(Aliment inventaire[], int nbAliments) {
+	// Recherche de l'aliment le plus cher
+	int indexMaxPrix = 0;
+	double maxPrix = inventaire[0].prix;
+
+	for (int i = 1; i < nbAliments; i++) {
+		if (inventaire[i].prix > maxPrix) {
+			indexMaxPrix = i;
+			maxPrix = inventaire[i].prix;
+		}
+	}
+
+	// Retourne l'aliment le plus cher
+	return inventaire[indexMaxPrix];
+}
+
+// Fonction pour la question 5
 void q5() {
+	const int MAX_ALIMENTS = 10;
+
 	// Création du tableau d'aliments
 	Aliment inventaire[MAX_ALIMENTS];
 	int nbAliments = 0;
@@ -255,31 +349,23 @@ void q5() {
 
 	fichier.close();
 
-	// Recherche de l'aliment le plus cher
-	int indexMaxPrix = 0;
-	double maxPrix = inventaire[0].prix;
-
-	for (int i = 1; i < nbAliments; i++) {
-		if (inventaire[i].prix > maxPrix) {
-			indexMaxPrix = i;
-			maxPrix = inventaire[i].prix;
-		}
-	}
-
-	// Affichage de tous les aliments de l'inventaire
+	// Affichage de tous les aliments de l'inventaire avec le prix total
 	for (int i = 0; i < nbAliments; i++) {
+		double prixTotal = inventaire[i].quantite * inventaire[i].prix;
 		cout << inventaire[i].quantite << " " << inventaire[i].nom << " ("
 			<< inventaire[i].type << ") a " << inventaire[i].prix
-			<< "$ chacun" << endl;
+			<< "$ chacun, pour un total de " << prixTotal << "$" << endl;
 	}
 
+	// Trouver l'aliment le plus cher
+	Aliment alimentCher = alimentPlusCher(inventaire, nbAliments);
+
 	// Affichage de l'aliment le plus cher
-	cout << endl << "L'aliment le plus cher est : " << inventaire[indexMaxPrix].quantite
-		<< " " << inventaire[indexMaxPrix].nom << " (" << inventaire[indexMaxPrix].type
-		<< ") a " << inventaire[indexMaxPrix].prix << "$ chacun" << endl;
+	cout << endl << "L'aliment le plus cher est : " << alimentCher.quantite
+		<< " " << alimentCher.nom << " (" << alimentCher.type
+		<< ") a " << alimentCher.prix << "$ chacun pour un total de "
+		<< (alimentCher.prix * alimentCher.quantite) << "$" << endl;
 }
-
-
 
 
 int main()
